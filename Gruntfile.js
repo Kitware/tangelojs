@@ -40,18 +40,38 @@ module.exports = function(grunt) {
     },
     jshint: {
       options: {
+        // Enforcing options (for strict checking, should be true by default;
+        // set to false indicates departure from this policy).
+        bitwise: true,
+        camelcase: true,
         curly: true,
         eqeqeq: true,
+        forin: true,
         immed: true,
         latedef: true,
         newcap: true,
-        noarg: true,
-        sub: true,
+        noempty: false,
+        nonbsp: true,
+        nonew: true,
+        plusplus: false,
+        quotmark: "double",
         undef: true,
         unused: true,
-        boss: true,
+        strict: true,
+        maxparams: false,
+        maxdepth: false,
+        maxstatements: false,
+        maxcomplexity: false,
+        maxlen: false,
+
+        // Relaxing options (for strict checking, should be false by
+        // default; set to true indicates departure from this policy).
         eqnull: true,
-        browser: true,
+
+        // Environment options.
+        //browser: true,
+
+        // Globals.
         globals: {}
       },
       gruntfile: {
