@@ -14,6 +14,10 @@ module.exports = function(grunt) {
     version: {
         src: ['lib/core/core.js']
     },
+    cleanup: {
+        dist: ["dist"],
+        dev: ["node_modules"]
+    },
     concat: {
       options: {
         banner: '<%= banner %>',
@@ -79,8 +83,17 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-clean');
 
   // Default task.
   grunt.registerTask('default', ['version', 'jshint', 'qunit', 'concat', 'uglify']);
 
+  // Clean task.  To prevent "grunt clean" from deleting the node_modules
+  // directory (as it would by default), we're renaming the task to "cleanup",
+  // then installing a better behaved default "clean" task.
+  grunt.renameTask("clean", "cleanup");
+  grunt.registerTask('clean', ['clean:dist']);
+  grunt.registerTask('clean:dist', ['cleanup:dist']);
+  grunt.registerTask('clean:dev', ['cleanup:dev']);
+  grunt.registerTask('clean:all', ['clean:dist', 'clean:dev']);
 };
