@@ -3,6 +3,9 @@
 module.exports = function(grunt) {
   "use strict";
 
+  var fs = require("fs"),
+      devopts;
+
   // Project configuration.
   grunt.initConfig({
     // Metadata.
@@ -13,6 +16,27 @@ module.exports = function(grunt) {
       "* Copyright (c) <%= grunt.template.today(\"yyyy\") %> <%= pkg.author.name %>;" +
       " Licensed <%= _.pluck(pkg.licenses, \"type\").join(\", \") %> */\n",
     // Task configuration.
+    prompt: {
+        devopts: {
+            options: {
+                questions: [
+                    {
+                        config: "tangeloPath",
+                        type: "input",
+                        message: "Tangelo command?",
+                        default: "tangelo",
+                    },
+
+                    {
+                        config: "tangeloPort",
+                        type: "input",
+                        message: "Tangelo port?",
+                        default: "8080"
+                    }
+                ]
+            }
+        }
+    },
     version: {
         src: ["lib/core/core.js"]
     },
@@ -102,6 +126,7 @@ module.exports = function(grunt) {
 
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks("grunt-continue");
+  grunt.loadNpmTasks("grunt-prompt");
   grunt.loadNpmTasks("grunt-version");
   grunt.loadNpmTasks("grunt-contrib-concat");
   grunt.loadNpmTasks("grunt-contrib-uglify");
@@ -202,12 +227,50 @@ module.exports = function(grunt) {
   // down.
   grunt.renameTask("qunit", "qunitTests");
   grunt.registerTask("qunit", [
+    "devopts",
     "tangelo:start",
     "continueOn",
     "qunitTests",
     "continueOff",
     "tangelo:stop"
   ]);
+
+  grunt.registerTask("devopts", "Read developer options from devopts.json, or create it if it doesn't exist", function () {
+      var text;
+
+      try {
+          text = fs.readFileSync("devopts.json", {encoding: "utf8"});
+          devopts = JSON.parse(text);
+      } catch (e) {
+          grunt.task.run("gendevopts");
+          grunt.task.run("devopts");
+      }
+  });
+
+  grunt.registerTask("gendevopts", "Write developer options out to disk", function () {
+      var text;
+
+      // If there is no config, then schedule the prompt task, followed by a
+      // retry of the current task, then bail.
+      if (!grunt.config("tangeloPath")) {
+          grunt.task.run("prompt:devopts");
+          grunt.task.run("gendevopts");
+          return;
+      }
+
+      // Build a devopts object from the config values.
+      text = JSON.stringify({
+          tangeloPath: grunt.config("tangeloPath"),
+          tangeloPort: parseInt(grunt.config("tangeloPort"))
+      }, null, 4) + "\n";
+
+      // Serialize it to disk.
+      try {
+          fs.writeFileSync("devopts.json", text);
+      } catch (e) {
+          grunt.fail.warn("Could not write devopts.json\n" + e);
+      }
+  });
 
   // Clean task.  To prevent "grunt clean" from deleting the node_modules
   // directory (as it would by default), we're renaming the task to "cleanup",
