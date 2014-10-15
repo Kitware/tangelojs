@@ -109,6 +109,9 @@ module.exports = function(grunt) {
         src: ["lib/**/*.js", "test/**/*.js"]
       }
     },
+    genTests: {
+        files: ["test/**/*.js"]
+    },
     qunitTests: {
       options: {
         httpBase: "http://localhost:8080"
@@ -133,6 +136,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-version");
   grunt.loadNpmTasks("grunt-contrib-concat");
   grunt.loadNpmTasks("grunt-contrib-uglify");
+  grunt.loadNpmTasks("grunt-contrib-jade");
   grunt.loadNpmTasks("grunt-contrib-qunit");
   grunt.loadNpmTasks("grunt-contrib-jshint");
   grunt.loadNpmTasks("grunt-contrib-watch");
@@ -140,6 +144,37 @@ module.exports = function(grunt) {
 
   // Default task.
   grunt.registerTask("default", ["version", "jshint", "qunit", "concat", "uglify"]);
+
+  grunt.registerMultiTask("genTests", function () {
+      var name,
+          config;
+
+      this.filesSrc.forEach(function (v) {
+          // Extract the name of the test suite, e.g., test/alpha.js -> alpha.
+          name = v.split("/")[1]
+              .split(".")[0];
+
+          // Build a jade task config.  The assignment below is so we can have a
+          // dynamic key based on the name of the test.
+          config = {
+              files: {},
+              options: {
+                  client: false,
+                  data: {
+                      title: "Test case - " + name,
+                      script: name + ".js"
+                  }
+              }
+          };
+          config.files["test/" + name + ".html"] = "jade/qunitHarness.jade";
+
+          // Add a jade task keyed to the test suite.
+          grunt.config(["jade", name], config);
+      });
+
+      // Schedule the jade task so the actual tests are generated.
+      grunt.task.run("jade");
+  });
 
   // Tangelo launch/kill task.
   (function () {
