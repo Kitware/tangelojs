@@ -42,7 +42,8 @@ module.exports = function(grunt) {
     },
     cleanup: {
         dist: ["dist"],
-        dev: ["node_modules"]
+        dev: ["node_modules"],
+        devopts: ["devopts.json"]
     },
     concat: {
       options: {
@@ -288,5 +289,6 @@ module.exports = function(grunt) {
   grunt.registerTask("clean", ["clean:dist"]);
   grunt.registerTask("clean:dist", ["cleanup:dist"]);
   grunt.registerTask("clean:dev", ["cleanup:dev"]);
-  grunt.registerTask("clean:all", ["clean:dist", "clean:dev"]);
+  grunt.registerTask("clean:devopts", ["cleanup:devopts"]);
+  grunt.registerTask("clean:all", ["clean:dist", "clean:dev", "clean:devopts"]);
 };
