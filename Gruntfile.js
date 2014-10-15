@@ -146,6 +146,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask("tangelo", "Starts/stops a Tangelo server instance.", function (op) {
       var done,
+          cmdline,
           fragment = null;
 
       if (op === "start") {
@@ -157,13 +158,19 @@ module.exports = function(grunt) {
 
         done = this.async();
 
-        tangelo = grunt.util.spawn({
-          cmd: "tangelo",
-          args: [
-            "--port", "8080",
-            "--root", "."
-          ]
-        }, function () {});
+        cmdline = {
+            cmd: devopts.tangeloPath,
+            args: [
+                "--port", devopts.tangeloPort,
+                "--root", "."
+              ]
+        };
+
+        console.log("Starting Tangelo server with: " + cmdline.cmd + " " + cmdline.args.join(" "));
+        tangelo = grunt.util.spawn(cmdline, function () {});
+        if (!tangelo) {
+            grunt.fail.fatal("Could not launch Tangelo");
+        }
 
         tangelo.stderr.setEncoding("utf8");
 
