@@ -94,10 +94,12 @@ module.exports = function(grunt) {
         eqnull: true,
 
         // Environment options.
-        //browser: true,
+        browser: true,
 
         // Globals.
-        globals: {}
+        globals: {
+            console: false
+        }
       },
       gruntfile: {
         src: "Gruntfile.js"
