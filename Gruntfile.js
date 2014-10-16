@@ -38,11 +38,13 @@ module.exports = function(grunt) {
         }
     },
     version: {
-        src: ["lib/core/core.js"]
+        src: ["lib/core/core.js",
+              "test/tangelo-version.js"]
     },
     cleanup: {
         dist: ["dist"],
-        dev: ["node_modules"]
+        dev: ["node_modules"],
+        devopts: ["devopts.json"]
     },
     concat: {
       options: {
@@ -104,24 +106,44 @@ module.exports = function(grunt) {
       gruntfile: {
         src: "Gruntfile.js"
       },
-      libTest: {
-        src: ["lib/**/*.js", "test/**/*.js"]
+      lib: {
+        src: ["lib/**/*.js"]
+      },
+      test: {
+        options: {
+            globals: {
+                QUnit: false,
+                tangelo: false
+            }
+        },
+        src: ["test/**/*.js"]
       }
+    },
+    genTests: {
+        files: ["test/**/*.js"]
+    },
+    copy: {
+        testjs: {
+            expand: true,
+            cwd: "test/",
+            src: "**/*.js",
+            dest: "dist/test/"
+        }
     },
     qunitTests: {
       options: {
-        httpBase: "http://localhost:8080"
+        httpBase: null
       },
-      files: ["test/**/*.html"]
+      files: ["dist/test/**/*.html"]
     },
     watch: {
       gruntfile: {
         files: "<%= jshint.gruntfile.src %>",
         tasks: ["jshint:gruntfile"]
       },
-      libTest: {
+      lib: {
         files: "<%= jshint.lib_test.src %>",
-        tasks: ["jshint:libTest", "qunit"]
+        tasks: ["jshint:lib", "qunit"]
       }
     }
   });
@@ -132,6 +154,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-version");
   grunt.loadNpmTasks("grunt-contrib-concat");
   grunt.loadNpmTasks("grunt-contrib-uglify");
+  grunt.loadNpmTasks("grunt-contrib-jade");
+  grunt.loadNpmTasks("grunt-contrib-copy");
   grunt.loadNpmTasks("grunt-contrib-qunit");
   grunt.loadNpmTasks("grunt-contrib-jshint");
   grunt.loadNpmTasks("grunt-contrib-watch");
@@ -139,6 +163,37 @@ module.exports = function(grunt) {
 
   // Default task.
   grunt.registerTask("default", ["version", "jshint", "qunit", "concat", "uglify"]);
+
+  grunt.registerMultiTask("genTests", function () {
+      var name,
+          config;
+
+      this.filesSrc.forEach(function (v) {
+          // Extract the name of the test suite, e.g., test/alpha.js -> alpha.
+          name = v.split("/")[1]
+              .split(".")[0];
+
+          // Build a jade task config.  The assignment below is so we can have a
+          // dynamic key based on the name of the test.
+          config = {
+              files: {},
+              options: {
+                  client: false,
+                  data: {
+                      title: "Test case - " + name,
+                      script: name + ".js"
+                  }
+              }
+          };
+          config.files["dist/test/" + name + ".html"] = "jade/qunitHarness.jade";
+
+          // Add a jade task keyed to the test suite.
+          grunt.config(["jade", name], config);
+      });
+
+      // Schedule the jade task so the actual tests are generated.
+      grunt.task.run("jade");
+  });
 
   // Tangelo launch/kill task.
   (function () {
@@ -253,7 +308,12 @@ module.exports = function(grunt) {
       } catch (e) {
           grunt.task.run("gendevopts");
           grunt.task.run("devopts");
+          return;
       }
+
+      grunt.config(["qunitTests", "options"], {
+          httpBase: "http://localhost:" + devopts.tangeloPort
+      });
   });
 
   grunt.registerTask("gendevopts", "Write developer options out to disk", function () {
@@ -288,5 +348,6 @@ module.exports = function(grunt) {
   grunt.registerTask("clean", ["clean:dist"]);
   grunt.registerTask("clean:dist", ["cleanup:dist"]);
   grunt.registerTask("clean:dev", ["cleanup:dev"]);
-  grunt.registerTask("clean:all", ["clean:dist", "clean:dev"]);
+  grunt.registerTask("clean:devopts", ["cleanup:devopts"]);
+  grunt.registerTask("clean:all", ["clean:dist", "clean:dev", "clean:devopts"]);
 };
