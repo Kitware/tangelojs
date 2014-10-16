@@ -119,7 +119,7 @@ module.exports = function(grunt) {
         src: ["test/**/*.js"]
       }
     },
-    genTests: {
+    genhtml: {
         files: ["test/**/*.js"]
     },
     copy: {
@@ -130,7 +130,7 @@ module.exports = function(grunt) {
             dest: "dist/test/"
         }
     },
-    qunitTests: {
+    qunit: {
       options: {
         httpBase: null
       },
@@ -162,9 +162,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-clean");
 
   // Default task.
-  grunt.registerTask("default", ["version", "jshint", "qunit", "concat", "uglify"]);
+  grunt.registerTask("default", ["devopts", "jshint", "build"]);
 
-  grunt.registerMultiTask("genTests", function () {
+  // Build task.
+  grunt.registerTask("build", "Build tangelo.js and tangelo.min.js", ["version", "concat", "uglify"]);
+
+  // Build tasks to support testing.
+  grunt.registerMultiTask("genhtml", "Generate HTML files for QUnit tests", function () {
       var name,
           config;
 
@@ -287,18 +291,20 @@ module.exports = function(grunt) {
     });
   }());
 
-  // Test task.  Start the Tangelo server, run the tests, then shut the server
-  // down.
-  grunt.renameTask("qunit", "qunitTests");
-  grunt.registerTask("qunit", [
+  // Test task.  Ensure we have devopts, start the Tangelo server, run the
+  // tests, then shut the server down.
+  grunt.registerTask("test", [
     "devopts",
+    "genhtml",
+    "copy",
     "tangelo:start",
     "continueOn",
-    "qunitTests",
+    "qunit",
     "continueOff",
     "tangelo:stop"
   ]);
 
+  // Developer options task.
   grunt.registerTask("devopts", "Read developer options from devopts.json, or create it if it doesn't exist", function () {
       var text;
 
@@ -311,7 +317,7 @@ module.exports = function(grunt) {
           return;
       }
 
-      grunt.config(["qunitTests", "options"], {
+      grunt.config(["qunit", "options"], {
           httpBase: "http://localhost:" + devopts.tangeloPort
       });
   });
