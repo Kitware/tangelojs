@@ -1,6 +1,8 @@
 QUnit.module("tangelo.data.distanceCluster()");
 
 (function () {
+    "use strict";
+
     // boilerplate for generating random points
     var defaultRange = [0, 100];
 
@@ -83,7 +85,7 @@ QUnit.module("tangelo.data.distanceCluster()");
             return Math.sqrt(x*x + y*y);
         }
 
-        QUnit.test(prefix + ' - testing a random dataset of size ' + N, function (assert) {
+        QUnit.test(prefix + " - testing a random dataset of size " + N, function (assert) {
             spec.clusterDistance = spec.clusterDistance || 10;
             spec.data = makeRandomData(N);
             
@@ -109,7 +111,7 @@ QUnit.module("tangelo.data.distanceCluster()");
     testRandomDefault(100, spec);
     //testRandomDefault(1000, spec);
     
-    QUnit.test('Degenerate metric', function (assert) {
+    QUnit.test("Degenerate metric", function (assert) {
         // degenerate metric
         spec.data = makeRandomData(100);
         spec.metric = function () {
@@ -120,7 +122,7 @@ QUnit.module("tangelo.data.distanceCluster()");
         assert.strictEqual(obj.singlets.length, 0);
     });
     
-    QUnit.test('Discrete metric', function (assert) {
+    QUnit.test("Discrete metric", function (assert) {
         // degenerate metric
         spec.data = makeRandomData(100);
         spec.metric = function () {
@@ -131,7 +133,7 @@ QUnit.module("tangelo.data.distanceCluster()");
         assert.strictEqual(obj.singlets.length, spec.data.length);
     });
 
-    QUnit.test('Custom accessor - array like data', function (assert) {
+    QUnit.test("Custom accessor - array like data", function (assert) {
         var spec = {
             data: makeRandomData(100).map(function (d) {
                 return [d.x, d.y];
@@ -150,7 +152,7 @@ QUnit.module("tangelo.data.distanceCluster()");
         checkCluster(assert, obj.clusters, obj.singlets, spec);
     });
 
-    QUnit.test('Custom accessor - nested data', function (assert) {
+    QUnit.test("Custom accessor - nested data", function (assert) {
         var spec = {
             data: makeRandomData(100).map(function (d) {
                 return { loc: d };

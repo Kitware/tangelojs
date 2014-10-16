@@ -1,10 +1,12 @@
-QUnit.module('tangelo.data.bin');
+QUnit.module("tangelo.data.bin");
 
-QUnit.test('Bin array creation - one bin', function (assert) {
+QUnit.test("Bin array creation - one bin", function (assert) {
+    "use strict";
+
     var bins = tangelo.data.bin({
-        data: [{'value': 0}, {'value': 1}],
+        data: [{"value": 0}, {"value": 1}],
         nBins: 1,
-        value: {'field': 'value'}
+        value: {"field": "value"}
     });
 
     assert.expect(3);
@@ -14,11 +16,13 @@ QUnit.test('Bin array creation - one bin', function (assert) {
     assert.ok(bins[0].max - 1 < 1e-8);
 });
 
-QUnit.test('Bin array creation - degenerate data', function (assert) {
+QUnit.test("Bin array creation - degenerate data", function (assert) {
+    "use strict";
+
     var bins = tangelo.data.bin({
-        data: [{'value': 0}, {'value': 0}],
+        data: [{"value": 0}, {"value": 0}],
         nBins: 1,
-        value: {'field': 'value'}
+        value: {"field": "value"}
     });
 
     assert.expect(3);
@@ -28,11 +32,13 @@ QUnit.test('Bin array creation - degenerate data', function (assert) {
     assert.ok(bins[0].max - 0.5 < 1e-8);
 });
 
-QUnit.test('Bin array creation - two bins', function (assert) {
+QUnit.test("Bin array creation - two bins", function (assert) {
+    "use strict";
+
     var bins = tangelo.data.bin({
-        data: [{'value': 0}, {'value': 1}],
+        data: [{"value": 0}, {"value": 1}],
         nBins: 2,
-        value: {'field': 'value'}
+        value: {"field": "value"}
     });
 
     assert.expect(5);
@@ -44,10 +50,12 @@ QUnit.test('Bin array creation - two bins', function (assert) {
     assert.ok(bins[1].max - 1 < 1e-8);
 });
 
-QUnit.test('Bin array creation - default nBins', function (assert) {
+QUnit.test("Bin array creation - default nBins", function (assert) {
+    "use strict";
+
     var bins = tangelo.data.bin({
-        data: [{'value': 0}, {'value': 0}],
-        value: {'field': 'value'}
+        data: [{"value": 0}, {"value": 0}],
+        value: {"field": "value"}
     });
 
     assert.expect(1);
@@ -55,7 +63,9 @@ QUnit.test('Bin array creation - default nBins', function (assert) {
     assert.strictEqual(bins.length, 25);
 });
 
-QUnit.test('Bin array creation - no data', function (assert) {
+QUnit.test("Bin array creation - no data", function (assert) {
+    "use strict";
+
     var bins = tangelo.data.bin();
     
     assert.expect(1);
@@ -63,11 +73,13 @@ QUnit.test('Bin array creation - no data', function (assert) {
     assert.strictEqual(bins.length, 0);
 });
 
-QUnit.test('Bin array creation - min/max given', function (assert) {
+QUnit.test("Bin array creation - min/max given", function (assert) {
+    "use strict";
+
     var bins = tangelo.data.bin({
-        data: [{'value': 0}, {'value': 0.5}],
+        data: [{"value": 0}, {"value": 0.5}],
         nBins: 1,
-        value: {'field': 'value'},
+        value: {"field": "value"},
         min: -1,
         max: 1
     });
@@ -79,11 +91,13 @@ QUnit.test('Bin array creation - min/max given', function (assert) {
     assert.ok(bins[0].max - 1 < 1e-8);
 });
 
-QUnit.test('Bin array creation - min given', function (assert) {
+QUnit.test("Bin array creation - min given", function (assert) {
+    "use strict";
+
     var bins = tangelo.data.bin({
-        data: [{'value': 0}, {'value': 0.5}],
+        data: [{"value": 0}, {"value": 0.5}],
         nBins: 1,
-        value: {'field': 'value'},
+        value: {"field": "value"},
         min: -1,
     });
 
@@ -94,11 +108,13 @@ QUnit.test('Bin array creation - min given', function (assert) {
     assert.ok(bins[0].max - 0.5 < 1e-8);
 });
 
-QUnit.test('Bin array creation - max given', function (assert) {
+QUnit.test("Bin array creation - max given", function (assert) {
+    "use strict";
+
     var bins = tangelo.data.bin({
-        data: [{'value': 0}, {'value': 0.5}],
+        data: [{"value": 0}, {"value": 0.5}],
         nBins: 1,
-        value: {'field': 'value'},
+        value: {"field": "value"},
         max: 1,
     });
 
@@ -109,11 +125,13 @@ QUnit.test('Bin array creation - max given', function (assert) {
     assert.ok(bins[0].max - 1 < 1e-8);
 });
 
-QUnit.test('Bin array creation - bins given', function (assert) {
+QUnit.test("Bin array creation - bins given", function (assert) {
+    "use strict";
+
     var _bins = [{min: -10, max: 10, count: 2}],
         bins = tangelo.data.bin({
-            data: [{'value': 0}, {'value': 0.5}],
-            value: {'field': 'value'},
+            data: [{"value": 0}, {"value": 0.5}],
+            value: {"field": "value"},
             bins: _bins
     });
 
@@ -122,7 +140,9 @@ QUnit.test('Bin array creation - bins given', function (assert) {
     assert.strictEqual(bins, _bins);
 });
 
-QUnit.test('Data binning - with bin creation', function (assert) {
+QUnit.test("Data binning - with bin creation", function (assert) {
+    "use strict";
+
     var data, bins;
 
     data = [0, 1, 2, 3].map(function (d) {return {value: d};});
@@ -152,7 +172,9 @@ QUnit.test('Data binning - with bin creation', function (assert) {
     ]);
 });
 
-QUnit.test('Data binning - with min/max given', function (assert) {
+QUnit.test("Data binning - with min/max given", function (assert) {
+    "use strict";
+
     var data, bins;
 
     data = [1, 3, 5, 7].map(function (d) {return {value: d};});
@@ -189,7 +211,9 @@ QUnit.test('Data binning - with min/max given', function (assert) {
     ]);
 });
 
-QUnit.test('Data binning - with bins given', function (assert) {
+QUnit.test("Data binning - with bins given", function (assert) {
+    "use strict";
+
     var data, bins, _bins;
 
     assert.expect(2);

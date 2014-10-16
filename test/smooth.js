@@ -1,13 +1,15 @@
-QUnit.module('tangelo.data.smooth()');
+QUnit.module("tangelo.data.smooth()");
 
 (function () {
+    "use strict";
+
     function makeData(n, x, y, xf) {
         var i, data = [], d;
         xf = xf || function (j) {
             return j + Math.random();
         };
-        x = x || 'x';
-        y = y || 'y';
+        x = x || "x";
+        y = y || "y";
         data.length = n;
         for (i = 0; i < n; i++) {
             d = {};
@@ -18,12 +20,12 @@ QUnit.module('tangelo.data.smooth()');
         return data;
     }
 
-    QUnit.test('Edge cases - empty data', function (assert) {
+    QUnit.test("Edge cases - empty data", function (assert) {
         assert.deepEqual(tangelo.data.smooth({}), []);
         assert.deepEqual(tangelo.data.smooth({data: []}), []);
     });
 
-    QUnit.test('Edge cases - non positive radius', function (assert) {
+    QUnit.test("Edge cases - non positive radius", function (assert) {
         var data = makeData(10);
         var values = [];
         data.forEach(function (d) {
@@ -37,7 +39,7 @@ QUnit.module('tangelo.data.smooth()');
         });
     });
 
-    QUnit.test('Edge cases - test in place data mutation', function (assert) {
+    QUnit.test("Edge cases - test in place data mutation", function (assert) {
         var data = makeData(25),
             obj = {};
         tangelo.data.smooth({
@@ -53,7 +55,7 @@ QUnit.module('tangelo.data.smooth()');
         });
     });
 
-    QUnit.test('Edge cases - test degenerate data', function (assert) {
+    QUnit.test("Edge cases - test degenerate data", function (assert) {
         var n = 25,
             data = makeData(n, null, null, function () { return 0; }),
             mean = 0,
@@ -71,7 +73,7 @@ QUnit.module('tangelo.data.smooth()');
         });
     });
 
-    QUnit.test('Edge cases - test sorting', function (assert) {
+    QUnit.test("Edge cases - test sorting", function (assert) {
         var data = makeData(25),
             values = [];
         data.forEach(function (d) {
@@ -85,7 +87,7 @@ QUnit.module('tangelo.data.smooth()');
         }), values);
     });
 
-    QUnit.test('Box kernel - large window', function (assert) {
+    QUnit.test("Box kernel - large window", function (assert) {
         var n = 25,
             data = makeData(n),
             mean = 0;
@@ -95,14 +97,14 @@ QUnit.module('tangelo.data.smooth()');
         mean = mean / n;
         tangelo.data.smooth({
             data: data,
-            kernel: 'box',
+            kernel: "box",
             radius: 10
         }).forEach(function (d) {
             assert.ok(Math.abs(d - mean) < 1e-10);
         });
     });
 
-    QUnit.test('Box kernel - 3 element window', function (assert) {
+    QUnit.test("Box kernel - 3 element window", function (assert) {
         var n = 100,
             i,
             data = [];
@@ -114,7 +116,7 @@ QUnit.module('tangelo.data.smooth()');
         }
         tangelo.data.smooth({
             data: data,
-            kernel: 'box',
+            kernel: "box",
             radius: 1.5,
             absolute: true
         }).forEach(function (d, i) {
@@ -130,7 +132,7 @@ QUnit.module('tangelo.data.smooth()');
         });
     });
 
-    QUnit.test('Gaussian kernel - large window', function (assert) {
+    QUnit.test("Gaussian kernel - large window", function (assert) {
         var n = 25,
             data = makeData(n),
             mean = 0;
@@ -141,14 +143,14 @@ QUnit.module('tangelo.data.smooth()');
         mean = mean / n;
         tangelo.data.smooth({
             data: data,
-            kernel: 'gaussian',
+            kernel: "gaussian",
             radius: 100
         }).forEach(function (d) {
             assert.ok(Math.abs(d - mean)/mean < 1e-4);
         });
     });
 
-    QUnit.test('Gaussian kernel - single point', function (assert) {
+    QUnit.test("Gaussian kernel - single point", function (assert) {
         var n = 101,
             data = [],
             i,
@@ -163,7 +165,7 @@ QUnit.module('tangelo.data.smooth()');
         }
         data[50].y = 1;
         tangelo.data.smooth({
-            kernel: 'gaussian',
+            kernel: "gaussian",
             radius: sigma * 3,
             absolute: true,
             data: data,
@@ -183,7 +185,7 @@ QUnit.module('tangelo.data.smooth()');
         });
     });
 
-    QUnit.test('custom kernel', function (assert) {
+    QUnit.test("custom kernel", function (assert) {
         var radius = 5,
             alpha = radius/3,
             n = 101,
@@ -226,7 +228,7 @@ QUnit.module('tangelo.data.smooth()');
         });
     });
 
-    QUnit.test('custom accessors', function (assert) {
+    QUnit.test("custom accessors", function (assert) {
         var n = 10,
             data = makeData(n),
             xCount = 0, yCount = 0;

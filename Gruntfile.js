@@ -106,8 +106,17 @@ module.exports = function(grunt) {
       gruntfile: {
         src: "Gruntfile.js"
       },
-      libTest: {
-        src: ["lib/**/*.js", "test/**/*.js"]
+      lib: {
+        src: ["lib/**/*.js"]
+      },
+      test: {
+        options: {
+            globals: {
+                QUnit: false,
+                tangelo: false
+            }
+        },
+        src: ["test/**/*.js"]
       }
     },
     genTests: {
@@ -132,9 +141,9 @@ module.exports = function(grunt) {
         files: "<%= jshint.gruntfile.src %>",
         tasks: ["jshint:gruntfile"]
       },
-      libTest: {
+      lib: {
         files: "<%= jshint.lib_test.src %>",
-        tasks: ["jshint:libTest", "qunit"]
+        tasks: ["jshint:lib", "qunit"]
       }
     }
   });

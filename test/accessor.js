@@ -9,6 +9,8 @@ var data = {
 };
 
 QUnit.test("Undefined accessors display 'undefined' property", function (assert) {
+    "use strict";
+
     var undef1 = tangelo.accessor(),
         undef2 = tangelo.accessor({});
 
@@ -19,6 +21,8 @@ QUnit.test("Undefined accessors display 'undefined' property", function (assert)
 });
 
 QUnit.test("Undefined accessor throws exception when called", function (assert) {
+    "use strict";
+
     assert.expect(2);
 
     assert.throws(tangelo.accessor());
@@ -26,6 +30,8 @@ QUnit.test("Undefined accessor throws exception when called", function (assert) 
 });
 
 QUnit.test("Defined accessors do not display 'undefined' property", function (assert) {
+    "use strict";
+
     var value = tangelo.accessor({value: 10});
     
     assert.expect(1);
@@ -34,6 +40,8 @@ QUnit.test("Defined accessors do not display 'undefined' property", function (as
 });
 
 QUnit.test("Value spec produces accessor", function (assert) {
+    "use strict";
+
     var value = tangelo.accessor({value: 10});
 
     assert.expect(1);
@@ -42,6 +50,8 @@ QUnit.test("Value spec produces accessor", function (assert) {
 });
 
 QUnit.test("Index spec produces accessor", function (assert) {
+    "use strict";
+
     var index = tangelo.accessor({index: true});
 
     assert.expect(1);
@@ -50,6 +60,8 @@ QUnit.test("Index spec produces accessor", function (assert) {
 });
 
 QUnit.test("Field spec produces accessor", function (assert) {
+    "use strict";
+
     var field1 = tangelo.accessor({field: "oranges"}),
         field2 = tangelo.accessor({field: "lemons.car"}),
         field3 = tangelo.accessor({field: "."});
@@ -63,6 +75,8 @@ QUnit.test("Field spec produces accessor", function (assert) {
 });
 
 QUnit.test("Unknown spec throws exception", function (assert) {
+    "use strict";
+
     assert.expect(2);
 
     assert.throws(function () {
@@ -72,6 +86,8 @@ QUnit.test("Unknown spec throws exception", function (assert) {
 });
 
 QUnit.test("Clone a function (twice)", function (assert) {
+    "use strict";
+
     assert.expect(1);
 
     assert.strictEqual(tangelo.accessor(tangelo.accessor(function (d) { return d; }))(10), 10);
