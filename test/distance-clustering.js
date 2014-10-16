@@ -97,7 +97,7 @@ QUnit.module("tangelo.data.distanceCluster()");
     // generate test cases
     testRandomDefault(10);
     testRandomDefault(100);
-    testRandomDefault(1000);
+    //testRandomDefault(1000);
 
     var spec = {
         clusterDistance: 15,
@@ -107,7 +107,7 @@ QUnit.module("tangelo.data.distanceCluster()");
     };
     testRandomDefault(10, spec);
     testRandomDefault(100, spec);
-    testRandomDefault(1000, spec);
+    //testRandomDefault(1000, spec);
     
     QUnit.test('Degenerate metric', function (assert) {
         // degenerate metric
@@ -131,7 +131,7 @@ QUnit.module("tangelo.data.distanceCluster()");
         assert.strictEqual(obj.singlets.length, spec.data.length);
     });
 
-    it('Custom accessor - array like data', function (assert) {
+    QUnit.test('Custom accessor - array like data', function (assert) {
         var spec = {
             data: makeRandomData(100).map(function (d) {
                 return [d.x, d.y];
@@ -150,7 +150,7 @@ QUnit.module("tangelo.data.distanceCluster()");
         checkCluster(assert, obj.clusters, obj.singlets, spec);
     });
 
-    it('Custom accessor - nested data', function (assert) {
+    QUnit.test('Custom accessor - nested data', function (assert) {
         var spec = {
             data: makeRandomData(100).map(function (d) {
                 return { loc: d };

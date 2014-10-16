@@ -113,11 +113,19 @@ module.exports = function(grunt) {
     genTests: {
         files: ["test/**/*.js"]
     },
+    copy: {
+        testjs: {
+            expand: true,
+            cwd: "test/",
+            src: "**/*.js",
+            dest: "dist/test/"
+        }
+    },
     qunitTests: {
       options: {
         httpBase: null
       },
-      files: ["test/**/*.html"]
+      files: ["dist/test/**/*.html"]
     },
     watch: {
       gruntfile: {
@@ -138,6 +146,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-concat");
   grunt.loadNpmTasks("grunt-contrib-uglify");
   grunt.loadNpmTasks("grunt-contrib-jade");
+  grunt.loadNpmTasks("grunt-contrib-copy");
   grunt.loadNpmTasks("grunt-contrib-qunit");
   grunt.loadNpmTasks("grunt-contrib-jshint");
   grunt.loadNpmTasks("grunt-contrib-watch");
@@ -167,7 +176,7 @@ module.exports = function(grunt) {
                   }
               }
           };
-          config.files["test/" + name + ".html"] = "jade/qunitHarness.jade";
+          config.files["dist/test/" + name + ".html"] = "jade/qunitHarness.jade";
 
           // Add a jade task keyed to the test suite.
           grunt.config(["jade", name], config);

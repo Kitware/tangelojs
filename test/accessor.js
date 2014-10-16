@@ -18,14 +18,14 @@ QUnit.test("Undefined accessors display 'undefined' property", function (assert)
     assert.strictEqual(undef2.undefined, true);
 });
 
-Qunit.test("Undefined accessor throws exception when called", function (assert) {
+QUnit.test("Undefined accessor throws exception when called", function (assert) {
     assert.expect(2);
 
     assert.throws(tangelo.accessor());
     assert.throws(tangelo.accessor({}));
 });
 
-Qunit.test("Defined accessors do not display 'undefined' property", function (assert) {
+QUnit.test("Defined accessors do not display 'undefined' property", function (assert) {
     var value = tangelo.accessor({value: 10});
     
     assert.expect(1);
@@ -33,7 +33,7 @@ Qunit.test("Defined accessors do not display 'undefined' property", function (as
     assert.strictEqual(value.undefined, undefined);
 });
 
-Qunit.test("Value spec produces accessor", function (assert) {
+QUnit.test("Value spec produces accessor", function (assert) {
     var value = tangelo.accessor({value: 10});
 
     assert.expect(1);
@@ -41,7 +41,7 @@ Qunit.test("Value spec produces accessor", function (assert) {
     assert.strictEqual(value(data), 10);
 });
 
-Qunit.test("Index spec produces accessor", function (assert) {
+QUnit.test("Index spec produces accessor", function (assert) {
     var index = tangelo.accessor({index: true});
 
     assert.expect(1);
@@ -49,7 +49,7 @@ Qunit.test("Index spec produces accessor", function (assert) {
     assert.strictEqual(index(data, 5), 5);
 });
 
-Qunit.test("Field spec produces accessor", function (assert) {
+QUnit.test("Field spec produces accessor", function (assert) {
     var field1 = tangelo.accessor({field: "oranges"}),
         field2 = tangelo.accessor({field: "lemons.car"}),
         field3 = tangelo.accessor({field: "."});
@@ -62,7 +62,7 @@ Qunit.test("Field spec produces accessor", function (assert) {
     assert.strictEqual(field3(4), 4);
 });
 
-Qunit.test("Unknown spec throws exception", function (assert) {
+QUnit.test("Unknown spec throws exception", function (assert) {
     assert.expect(2);
 
     assert.throws(function () {
@@ -71,7 +71,7 @@ Qunit.test("Unknown spec throws exception", function (assert) {
     assert.throws(tangelo.accessor(undefined));
 });
 
-Qunit.test("Clone a function (twice)", function (assert) {
+QUnit.test("Clone a function (twice)", function (assert) {
     assert.expect(1);
 
     assert.strictEqual(tangelo.accessor(tangelo.accessor(function (d) { return d; }))(10), 10);

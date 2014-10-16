@@ -82,7 +82,7 @@ QUnit.module('tangelo.data.smooth()');
             data: data,
             sorted: false,
             radius: 0
-        }, values));
+        }), values);
     });
 
     QUnit.test('Box kernel - large window', function (assert) {
