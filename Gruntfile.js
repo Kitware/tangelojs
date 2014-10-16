@@ -38,7 +38,8 @@ module.exports = function(grunt) {
         }
     },
     version: {
-        src: ["lib/core/core.js"]
+        src: ["lib/core/core.js",
+              "test/tangelo-version.js"]
     },
     cleanup: {
         dist: ["dist"],
@@ -114,7 +115,7 @@ module.exports = function(grunt) {
     },
     qunitTests: {
       options: {
-        httpBase: "http://localhost:8080"
+        httpBase: null
       },
       files: ["test/**/*.html"]
     },
@@ -289,7 +290,12 @@ module.exports = function(grunt) {
       } catch (e) {
           grunt.task.run("gendevopts");
           grunt.task.run("devopts");
+          return;
       }
+
+      grunt.config(["qunitTests", "options"], {
+          httpBase: "http://localhost:" + devopts.tangeloPort
+      });
   });
 
   grunt.registerTask("gendevopts", "Write developer options out to disk", function () {
