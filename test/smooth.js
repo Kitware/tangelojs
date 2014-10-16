@@ -32,8 +32,8 @@ QUnit.module("tangelo.data.smooth()");
             values.push(d.y);
         });
         tangelo.data.smooth({
-                data: data,
-                radius: -1
+            data: data,
+            radius: -1
         }).forEach(function (d) {
             assert.ok(values.indexOf(d) >= 0);
         });

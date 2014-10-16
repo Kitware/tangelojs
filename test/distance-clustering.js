@@ -26,7 +26,7 @@ QUnit.module("tangelo.data.distanceCluster()");
         }
         return data;
     }
-    
+
     function checkCluster(assert, cluster, singlet, spec) {
         assert.ok(Array.isArray(cluster));
         cluster.forEach(function (c) {
@@ -60,7 +60,7 @@ QUnit.module("tangelo.data.distanceCluster()");
                 assert.ok(spec.metric(d.center(), e) > spec.clusterDistance);
             });
         });
-        
+
         assert.ok(Array.isArray(singlet));
         singlet.forEach(function (d) {
             assert.notStrictEqual(d, undefined);
@@ -74,7 +74,7 @@ QUnit.module("tangelo.data.distanceCluster()");
             });
         });
     }
-    
+
     // main test runner
     function testRandomDefault(N, spec) {
         var prefix = spec ? "Default metric" : "Custom metric";
@@ -88,14 +88,14 @@ QUnit.module("tangelo.data.distanceCluster()");
         QUnit.test(prefix + " - testing a random dataset of size " + N, function (assert) {
             spec.clusterDistance = spec.clusterDistance || 10;
             spec.data = makeRandomData(N);
-            
+
             var obj = tangelo.data.distanceCluster(spec);
-            
+
             spec.metric = spec.metric || metric;
             checkCluster(assert, obj.clusters, obj.singlets, spec);
         });
     }
-   
+
     // generate test cases
     testRandomDefault(10);
     testRandomDefault(100);
@@ -110,7 +110,7 @@ QUnit.module("tangelo.data.distanceCluster()");
     testRandomDefault(10, spec);
     testRandomDefault(100, spec);
     //testRandomDefault(1000, spec);
-    
+
     QUnit.test("Degenerate metric", function (assert) {
         // degenerate metric
         spec.data = makeRandomData(100);
@@ -121,7 +121,7 @@ QUnit.module("tangelo.data.distanceCluster()");
         assert.strictEqual(obj.clusters.length, 1);
         assert.strictEqual(obj.singlets.length, 0);
     });
-    
+
     QUnit.test("Discrete metric", function (assert) {
         // degenerate metric
         spec.data = makeRandomData(100);
@@ -143,7 +143,7 @@ QUnit.module("tangelo.data.distanceCluster()");
             clusterDistance: 15
         };
         var obj = tangelo.data.distanceCluster(spec);
-        
+
         spec.metric = function (a, b) {
             var x = a[0] - b[0],
                 y = a[1] - b[1];
@@ -162,7 +162,7 @@ QUnit.module("tangelo.data.distanceCluster()");
             clusterDistance: 15
         };
         var obj = tangelo.data.distanceCluster(spec);
-        
+
         spec.metric = function (a, b) {
             var x = a.loc.x - b.loc.x,
                 y = a.loc.y - b.loc.y;

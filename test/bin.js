@@ -67,7 +67,7 @@ QUnit.test("Bin array creation - no data", function (assert) {
     "use strict";
 
     var bins = tangelo.data.bin();
-    
+
     assert.expect(1);
 
     assert.strictEqual(bins.length, 0);
@@ -133,7 +133,7 @@ QUnit.test("Bin array creation - bins given", function (assert) {
             data: [{"value": 0}, {"value": 0.5}],
             value: {"field": "value"},
             bins: _bins
-    });
+        });
 
     assert.expect(1);
 

@@ -33,7 +33,7 @@ QUnit.test("Defined accessors do not display 'undefined' property", function (as
     "use strict";
 
     var value = tangelo.accessor({value: 10});
-    
+
     assert.expect(1);
 
     assert.strictEqual(value.undefined, undefined);
