@@ -123,8 +123,49 @@ module.exports = function(grunt) {
         },
         jscs: {
             options: {
+                requireCurlyBraces: true,
+                requireSpaceAfterKeywords: true,
+                requireSpaceBeforeBlockStatements: true,
+                requireParenthesesAroundIIFE: true,
+                requireSpacesInConditionalExpression: true,
+                requireSpacesInAnonymousFunctionExpression: {
+                    beforeOpeningRoundBrace: true,
+                    beforeOpeningCurlyBrace: true
+                },
+                requireSpacesInNamedFunctionExpression: {
+                    beforeOpeningCurlyBrace: true
+                },
+                requireSpacesInFunctionDeclaration: {
+                    beforeOpeningCurlyBrace: true
+                },
+                requireMultipleVarDecl: true,
+                requireBlocksOnNewline: true,
+                disallowPaddingNewlinesInBlocks: true,
+                disallowEmptyBlocks: true,
+                disallowQuotedKeysInObjects: true,
+                disallowDanglingUnderscores: true,
+                disallowSpaceAfterObjectKeys: true,
+                requireSpaceBeforeObjectValues: true,
+                requireCommaBeforeLineBreak: true,
+                requireOperatorBeforeLineBreak: true,
+                disallowSpaceAfterPrefixUnaryOperators: true,
+                disallowSpaceBeforePostfixUnaryOperators: true,
+                disallowImplicitTypeConversion: ["numeric", "boolean", "binary", "string"],
+                disallowMultipleLineStrings: true,
+                disallowMultipleLineBreaks: true,
+                disallowMixedSpacesAndTabs: true,
+                disallowTrailingWhitespace: true,
+                disallowTrailingComma: true,
+                disallowKeywordsOnNewLine: ["else if", "else"],
+                requireLineFeedAtFileEnd: true,
+                requireCapitalizedConstructors: true,
+                requireDotNotation: true,
+                requireSpaceAfterLineComment: true,
+                disallowNewlineBeforeBlockStatements: true,
+                validateLineBreaks: "LF",
                 validateIndentation: 4,
-                disallowTrailingWhitespace: true
+                validateParameterSeparator: ", ",
+                safeContextKeyword: ["that"]
             },
             gruntfile: {
                 src: ["Gruntfile.js"]
