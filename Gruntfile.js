@@ -162,8 +162,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-clean");
 
   // Default task.
-  grunt.registerTask("default", ["version", "jshint", "concat", "uglify", "test"]);
+  grunt.registerTask("default", ["devopts", "jshint", "build"]);
 
+  // Build task.
+  grunt.registerTask("build", "Build tangelo.js and tangelo.min.js", ["version", "concat", "uglify"]);
+
+  // Build tasks to support testing.
   grunt.registerMultiTask("genhtml", "Generate HTML files for QUnit tests", function () {
       var name,
           config;
