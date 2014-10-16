@@ -106,7 +106,7 @@ module.exports = function(grunt) {
       gruntfile: {
         src: "Gruntfile.js"
       },
-      lib: {
+      tangelo: {
         src: ["lib/**/*.js"]
       },
       test: {
@@ -118,6 +118,20 @@ module.exports = function(grunt) {
         },
         src: ["test/**/*.js"]
       }
+    },
+    jscs: {
+        options: {
+            validateIndentation: 4
+        },
+        gruntfile: {
+            src: ["Gruntfile.js"]
+        },
+        tangelo: {
+            src: ["lib/**/*.js"]
+        },
+        test: {
+            src: ["test/**/*.js"]
+        }
     },
     genhtml: {
         files: ["test/**/*.js"]
@@ -139,11 +153,11 @@ module.exports = function(grunt) {
     watch: {
       gruntfile: {
         files: "<%= jshint.gruntfile.src %>",
-        tasks: ["jshint:gruntfile"]
+        tasks: ["jshint:gruntfile", "jscs:gruntfile"]
       },
-      lib: {
+      tangelo: {
         files: "<%= jshint.lib_test.src %>",
-        tasks: ["jshint:lib", "qunit"]
+        tasks: ["jshint:lib", "jscs:lib", "test"]
       }
     }
   });
@@ -152,6 +166,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-continue");
   grunt.loadNpmTasks("grunt-prompt");
   grunt.loadNpmTasks("grunt-version");
+  grunt.loadNpmTasks("grunt-jscs");
   grunt.loadNpmTasks("grunt-contrib-concat");
   grunt.loadNpmTasks("grunt-contrib-uglify");
   grunt.loadNpmTasks("grunt-contrib-jade");
@@ -162,7 +177,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-clean");
 
   // Default task.
-  grunt.registerTask("default", ["devopts", "jshint", "build"]);
+  grunt.registerTask("default", ["devopts", "jshint", "jscs", "build"]);
 
   // Build task.
   grunt.registerTask("build", "Build tangelo.js and tangelo.min.js", ["version", "concat", "uglify"]);
