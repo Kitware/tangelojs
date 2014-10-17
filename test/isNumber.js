@@ -27,7 +27,9 @@ QUnit.test("Strings of numbers are not numbers", function (assert) {
 QUnit.test("Strings of numbers cast to numbers (with +) are numbers", function (assert) {
     "use strict";
 
+    // jscs: disable disallowImplicitTypeConversion
     assert.ok(tangelo.isNumber(+"42"));
+    // jscs: enable disallowImplicitTypeConversion
 });
 
 QUnit.test("Empty strings are not numbers", function (assert) {
