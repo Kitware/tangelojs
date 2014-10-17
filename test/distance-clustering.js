@@ -11,7 +11,9 @@ QUnit.module("tangelo.data.distanceCluster()");
     }
 
     function makeRandomPoint(mkRand) {
-        mkRand = mkRand || function () { return makeRandom(defaultRange); };
+        mkRand = mkRand || function () {
+            return makeRandom(defaultRange);
+        };
         return {
             x: mkRand(),
             y: mkRand()
@@ -99,7 +101,7 @@ QUnit.module("tangelo.data.distanceCluster()");
     // generate test cases
     testRandomDefault(10);
     testRandomDefault(100);
-    //testRandomDefault(1000);
+    // testRandomDefault(1000);
 
     var spec = {
         clusterDistance: 15,
@@ -109,7 +111,7 @@ QUnit.module("tangelo.data.distanceCluster()");
     };
     testRandomDefault(10, spec);
     testRandomDefault(100, spec);
-    //testRandomDefault(1000, spec);
+    // testRandomDefault(1000, spec);
 
     QUnit.test("Degenerate metric", function (assert) {
         // degenerate metric
@@ -134,15 +136,22 @@ QUnit.module("tangelo.data.distanceCluster()");
     });
 
     QUnit.test("Custom accessor - array like data", function (assert) {
-        var spec = {
+        var spec,
+            obj;
+
+        spec = {
             data: makeRandomData(100).map(function (d) {
                 return [d.x, d.y];
             }),
-            x: function (d) { return d[0]; },
-            y: function (d) { return d[1]; },
+            x: function (d) {
+                return d[0];
+            },
+            y: function (d) {
+                return d[1];
+            },
             clusterDistance: 15
         };
-        var obj = tangelo.data.distanceCluster(spec);
+        obj = tangelo.data.distanceCluster(spec);
 
         spec.metric = function (a, b) {
             var x = a[0] - b[0],
@@ -153,15 +162,22 @@ QUnit.module("tangelo.data.distanceCluster()");
     });
 
     QUnit.test("Custom accessor - nested data", function (assert) {
-        var spec = {
+        var spec,
+            obj;
+
+        spec = {
             data: makeRandomData(100).map(function (d) {
                 return { loc: d };
             }),
-            x: function (d) { return d.loc.x; },
-            y: function (d) { return d.loc.y; },
+            x: function (d) {
+                return d.loc.x;
+            },
+            y: function (d) {
+                return d.loc.y;
+            },
             clusterDistance: 15
         };
-        var obj = tangelo.data.distanceCluster(spec);
+        obj = tangelo.data.distanceCluster(spec);
 
         spec.metric = function (a, b) {
             var x = a.loc.x - b.loc.x,

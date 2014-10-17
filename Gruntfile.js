@@ -1,6 +1,6 @@
 /*jshint node:true*/
 /*global module:false*/
-module.exports = function(grunt) {
+module.exports = function (grunt) {
     "use strict";
 
     var fs = require("fs"),
@@ -24,7 +24,7 @@ module.exports = function(grunt) {
                             config: "tangeloPath",
                             type: "input",
                             message: "Tangelo command?",
-                            default: "tangelo",
+                            default: "tangelo"
                         },
 
                         {
@@ -143,7 +143,6 @@ module.exports = function(grunt) {
                 disallowPaddingNewlinesInBlocks: true,
                 disallowEmptyBlocks: true,
                 disallowQuotedKeysInObjects: true,
-                disallowDanglingUnderscores: true,
                 disallowSpaceAfterObjectKeys: true,
                 requireSpaceBeforeObjectValues: true,
                 requireCommaBeforeLineBreak: true,

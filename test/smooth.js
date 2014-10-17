@@ -26,8 +26,8 @@ QUnit.module("tangelo.data.smooth()");
     });
 
     QUnit.test("Edge cases - non positive radius", function (assert) {
-        var data = makeData(10);
-        var values = [];
+        var data = makeData(10),
+            values = [];
         data.forEach(function (d) {
             values.push(d.y);
         });
@@ -57,7 +57,9 @@ QUnit.module("tangelo.data.smooth()");
 
     QUnit.test("Edge cases - test degenerate data", function (assert) {
         var n = 25,
-            data = makeData(n, null, null, function () { return 0; }),
+            data = makeData(n, null, null, function () {
+                return 0;
+            }),
             mean = 0,
             values;
         data.forEach(function (d) {
@@ -215,7 +217,6 @@ QUnit.module("tangelo.data.smooth()");
             },
             normalize: false
         });
-
 
         data.forEach(function (d, i) {
             var v;
